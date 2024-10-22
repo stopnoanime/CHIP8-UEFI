@@ -1,0 +1,5 @@
+*.EFI
+*.efi
+*.lib
+*.obj
+out/
