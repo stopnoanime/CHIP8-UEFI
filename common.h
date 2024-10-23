@@ -3,6 +3,6 @@
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
-#define NULL ((void*)0)
+#define NULL ((void *)0)
 
 #endif
