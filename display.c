@@ -2,11 +2,11 @@
 #include "common.h"
 #include "efi/protocol/efi-gop.h"
 
-bool CHIP8_FRAMEBUFFER[CHIP8_DISPLAY_X][CHIP8_DISPLAY_Y];
-
 static int DISPLAY_SCALE;
 static int DISPLAY_OFFSET_X;
 static int DISPLAY_OFFSET_Y;
+
+static bool CHIP8_FRAMEBUFFER[CHIP8_DISPLAY_X][CHIP8_DISPLAY_Y];
 
 static EFI_GRAPHICS_OUTPUT_PROTOCOL *gop;
 

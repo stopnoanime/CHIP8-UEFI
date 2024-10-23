@@ -8,12 +8,13 @@ EFI_PLATFORM = 1
 
 all : BOOTX64.EFI
 
-main.efi: main.o display.o chip8.o
+main.efi: main.o display.o chip8.o input.o
 	$(LD) $(LDFLAGS) -entry:efi_main $^ -out:$@
 
 main.o: main.c
 chip8.o: chip8.c
 display.o: display.c
+input.o: input.c
 
 
 BOOTX64.EFI: main.efi

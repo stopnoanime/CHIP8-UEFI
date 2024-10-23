@@ -7,8 +7,6 @@
 #define CHIP8_DISPLAY_X 64
 #define CHIP8_DISPLAY_Y 32
 
-extern bool CHIP8_FRAMEBUFFER[CHIP8_DISPLAY_X][CHIP8_DISPLAY_Y];
-
 void init_display(EFI_SYSTEM_TABLE *SystemTable);
 
 void clear_framebuffer();

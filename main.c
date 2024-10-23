@@ -2,23 +2,6 @@
 #include "display.h"
 #include "efi/efi-st.h"
 
-void itoaw(unsigned val, CHAR16 *s) {
-  CHAR16 *tmp = s;
-  tmp[0] = 0;
-
-  while (val || tmp == s) {
-    *(++tmp) = (val % 10) + '0';
-    val /= 10;
-  }
-
-  while (s < tmp) {
-    CHAR16 swap;
-    swap = *s;
-    *(s++) = *tmp;
-    *(tmp--) = swap;
-  }
-}
-
 int efi_main(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE *SystemTable) {
   static const uint8_t rom[132] = {
       0x00, 0xe0, 0xa2, 0x2a, 0x60, 0x0c, 0x61, 0x08, 0xd0, 0x1f, 0x70, 0x09,
