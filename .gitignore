@@ -1,5 +1,6 @@
 *.EFI
 *.efi
 *.lib
-*.obj
+*.o
 out/
+.vscode

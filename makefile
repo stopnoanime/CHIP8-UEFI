@@ -8,11 +8,14 @@ EFI_PLATFORM = 1
 
 all : BOOTX64.EFI
 
-main.efi : main.obj
-	$(LD) $(LDFLAGS) -entry:efi_main $< -out:$@
+main.efi: main.o display.o
+	$(LD) $(LDFLAGS) -entry:efi_main $^ -out:$@
 
-main.obj : main.c
+main.o: main.c
 	$(CC) $(CFLAGS) -c $< -o $@
+
+display.o: display.c
+
 
 BOOTX64.EFI: main.efi
 	mkdir --parents ./out/EFI/BOOT
@@ -22,6 +25,6 @@ run: BOOTX64.EFI
 	qemu-system-x86_64 -net none -drive if=pflash,format=raw,unit=0,readonly=on,file=OVMF_CODE.fd -drive format=raw,file=fat:rw:out
 	
 clean:
-	rm -rf *.lib *.efi *.EFI *.obj
+	rm -rf *.lib *.efi *.EFI *.o out
 
 
