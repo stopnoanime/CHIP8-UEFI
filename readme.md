@@ -7,7 +7,9 @@ You can add your own games there.
 The roms are sourced from [here](https://github.com/kripod/chip8-roms).
 
 ## Compiling
-You need `clang`, `lld` and `make`. Then just run `make all`.
+First run `git submodule update --init` to pull the required [efi headers](https://github.com/yoppeh/efi).
+
+You need to have `clang`, `lld` and `make` installed. Then you can just run `make all`.
 
 ## Running in QEMU
 You need to have `qemu-system-x86_64` and `ovmf` installed.
