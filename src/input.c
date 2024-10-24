@@ -1,6 +1,7 @@
 #include "input.h"
 
 static EFI_SYSTEM_TABLE *SystemTable;
+/* Counts the number of ticks since last keypress for every key */
 static uint8_t KEY_STATE[16];
 static const CHAR16 KEY_MAP[16] = {L'x', L'1', L'2', L'3', L'q', L'w',
                                    L'e', L'a', L's', L'd', L'z', L'c',
@@ -20,7 +21,7 @@ void init_input(EFI_SYSTEM_TABLE *ST) {
   SystemTable = ST;
 
   for (int i = 0; i < 16; i++)
-    KEY_STATE[i] = KEY_TICKS;
+    KEY_STATE[i] = KEY_TICKS; // Mark as released
 }
 
 bool key_pressed(uint8_t key) { return KEY_STATE[key] < KEY_TICKS; }
@@ -49,7 +50,7 @@ bool update_pressed() {
   status = SystemTable->ConIn->ReadKeyStroke(SystemTable->ConIn, &inputKey);
 
   if (status == EFI_SUCCESS) {
-    if (inputKey.ScanCode == 0x17)
+    if (inputKey.ScanCode == 0x17) // Escape
       return true;
 
     uint8_t key = unicodeToKey(inputKey.UnicodeChar);
@@ -57,7 +58,7 @@ bool update_pressed() {
     if (key < 16)
       KEY_STATE[key] = 0;
 
-    return update_pressed();
+    return update_pressed(); // Process all keys in input queue
   }
 
   for (int i = 0; i < 16; i++)

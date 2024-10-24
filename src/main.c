@@ -78,9 +78,9 @@ void init_files(EFI_FILE_PROTOCOL *Roms) {
 void display_menu(EFI_SYSTEM_TABLE *SystemTable) {
   CHAR16 rom_prefix[4] = L"a: ";
 
-  output(L"Press specified key to start ROM.\n\r\n\r")
+  output(L"Press specified key to start ROM.\n\r\n\r");
 
-      for (int i = 0; i < 26; i++) {
+  for (int i = 0; i < 26; i++) {
     if (!files[i][0])
       break;
 
