@@ -34,6 +34,6 @@ run: partition OVMF.fd
 	qemu-system-x86_64 -net none -drive if=pflash,format=raw,unit=0,readonly=on,file=OVMF.fd -drive format=raw,file=fat:rw:partition
 	
 clean:
-	rm -rf *.lib *.efi *.EFI *.o partition *.fd
+	rm -rf *.lib *.efi *.EFI *.o partition *.fd build
 
 
