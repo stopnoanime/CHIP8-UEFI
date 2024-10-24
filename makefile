@@ -16,11 +16,12 @@ chip8.o: chip8.c
 display.o: display.c
 input.o: input.c
 
-
 BOOTX64.EFI: main.efi
 	mkdir --parents ./out/EFI/BOOT
+	mkdir --parents ./out/roms
 	cp main.efi ./out/EFI/BOOT/BOOTX64.EFI
-
+	cp roms/* ./out/roms
+	
 run: BOOTX64.EFI
 	qemu-system-x86_64 -net none -drive if=pflash,format=raw,unit=0,readonly=on,file=OVMF_CODE.fd -drive format=raw,file=fat:rw:out
 	
