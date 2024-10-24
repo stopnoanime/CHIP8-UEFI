@@ -89,13 +89,15 @@ int efi_main(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE *SystemTable) {
   chip8_init(rom, 2048);
 
   int timer_counter = 0;
-
+  
   while(true) {
     chip8_loop();
 
     timer_counter = (timer_counter + 1)%10;
     if(timer_counter == 0)
       chip8_timer_60HZ();
+
+    update_pressed();
 
     SystemTable->BootServices->Stall(1000000 / 600);
   }

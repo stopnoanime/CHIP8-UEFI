@@ -63,6 +63,7 @@ void chip8_loop() {
   uint8_t tmp;
   PC += 2;
 
+  static bool in_FX0A = false;
   switch (ins >> 12) {
   case 0x0:
     if (ins == 0x00E0)
@@ -188,7 +189,14 @@ void chip8_loop() {
       break;
 
     case 0x0A:
-      if (!any_pressed(&REGS[X(ins)]))
+      if (!in_FX0A) {
+        in_FX0A = true;
+        reset_released();
+      }
+
+      if (any_released(&REGS[X(ins)]))
+        in_FX0A = false;
+      else
         PC -= 2;
       break;
 
@@ -217,6 +225,8 @@ void chip8_loop() {
 }
 
 void chip8_timer_60HZ() {
-  if(DELAY_TIMER > 0) DELAY_TIMER--;
-  if(SOUND_TIMER > 0) SOUND_TIMER--;
+  if (DELAY_TIMER > 0)
+    DELAY_TIMER--;
+  if (SOUND_TIMER > 0)
+    SOUND_TIMER--;
 }
