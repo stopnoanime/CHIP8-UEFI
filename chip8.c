@@ -21,14 +21,14 @@ static uint16_t pop(uint16_t val) { return STACK[--STACK_POINTER]; }
 
 static void add(uint8_t X, uint8_t Y) {
   uint16_t res = REGS[X] + REGS[Y];
-  REGS[0xF] = res > 0xFF;
   REGS[X] = res;
+  REGS[0xF] = res > 0xFF;
 }
 
 static void sub(uint8_t X, uint8_t A, uint8_t B) {
   int16_t res = REGS[A] - REGS[B];
-  REGS[0xF] = res >= 0;
   REGS[X] = res;
+  REGS[0xF] = res >= 0;
 }
 
 // random ;)
@@ -60,6 +60,7 @@ void chip8_init(const uint8_t *rom, uint16_t rom_size) {
 
 void chip8_loop() {
   uint16_t ins = (RAM[PC] << 8) | RAM[PC + 1];
+  uint8_t tmp;
   PC += 2;
 
   switch (ins >> 12) {
@@ -123,15 +124,17 @@ void chip8_loop() {
       sub(X(ins), X(ins), Y(ins));
       break;
     case 0x6:
-      REGS[0xF] = REGS[X(ins)] & 1;
+      tmp = REGS[X(ins)] & 1;
       REGS[X(ins)] >>= 1;
+      REGS[0xF] = tmp;
       break;
     case 0x7:
       sub(X(ins), Y(ins), X(ins));
       break;
     case 0xE:
-      REGS[0xF] = REGS[X(ins)] >> 7;
+      tmp = REGS[X(ins)] >> 7;
       REGS[X(ins)] <<= 1;
+      REGS[0xF] = tmp;
       break;
     }
     break;
@@ -200,12 +203,12 @@ void chip8_loop() {
       break;
 
     case 0x55:
-      for (int i = 0; i <= REGS[X(ins)]; i++)
+      for (int i = 0; i <= X(ins); i++)
         RAM[I + i] = REGS[i];
       break;
 
     case 0x65:
-      for (int i = 0; i <= REGS[X(ins)]; i++)
+      for (int i = 0; i <= X(ins); i++)
         REGS[i] = RAM[I + i];
       break;
     }
