@@ -1,6 +1,10 @@
+.vscode
+
 *.EFI
 *.efi
 *.lib
 *.o
-out/
-.vscode
+*.fd
+
+build/
+partition/

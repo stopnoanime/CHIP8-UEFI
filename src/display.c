@@ -1,6 +1,6 @@
 #include "display.h"
 #include "common.h"
-#include "efi/protocol/efi-gop.h"
+#include <protocol/efi-gop.h>
 
 static int DISPLAY_SCALE;
 static int DISPLAY_OFFSET_X;

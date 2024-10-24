@@ -1,10 +1,10 @@
 #include "chip8.h"
 #include "common.h"
 #include "display.h"
-#include "efi/efi-st.h"
-#include "efi/protocol/efi-lip.h"
-#include "efi/protocol/efi-sfsp.h"
 #include "input.h"
+#include <efi-st.h>
+#include <protocol/efi-lip.h>
+#include <protocol/efi-sfsp.h>
 
 #define ROM_SIZE 0xE00
 #define CHIP8_DELAY 1000

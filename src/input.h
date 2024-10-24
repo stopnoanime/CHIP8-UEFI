@@ -1,7 +1,7 @@
 #ifndef CHIP8_INPUT
 #define CHIP8_INPUT
 
-#include "efi/efi-st.h"
+#include <efi-st.h>
 #include <stdbool.h>
 #include <stdint.h>
 

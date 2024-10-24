@@ -1,7 +1,7 @@
 #ifndef CHIP8_DISPLAY
 #define CHIP8_DISPLAY
 
-#include "efi/efi-st.h"
+#include <efi-st.h>
 #include <stdbool.h>
 
 #define CHIP8_DISPLAY_X 64
