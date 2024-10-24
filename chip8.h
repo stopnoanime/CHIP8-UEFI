@@ -14,5 +14,6 @@
 
 void chip8_init(const uint8_t *rom, uint16_t rom_size);
 void chip8_loop();
+void chip8_timer_60HZ();
 
 #endif

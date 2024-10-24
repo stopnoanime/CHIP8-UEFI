@@ -2,6 +2,7 @@
 #include "display.h"
 #include "efi/efi-st.h"
 #include "input.h"
+#include "common.h"
 
 int efi_main(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE *SystemTable) {
   static const uint8_t rom[2048] = {
@@ -82,13 +83,22 @@ int efi_main(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE *SystemTable) {
       0x17, 0x20, 0x17, 0x28, 0x02, 0x28, 0x09, 0x28, 0x10, 0x28, 0x17, 0xfe,
       0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0x0a, 0xae, 0xa2, 0x42, 0x38, 0x08, 0x30,
       0xb8};
-      
+
   init_display(SystemTable);
   init_input(SystemTable);
   chip8_init(rom, 2048);
 
-  while (true)
+  int timer_counter = 0;
+
+  while(true) {
     chip8_loop();
+
+    timer_counter = (timer_counter + 1)%10;
+    if(timer_counter == 0)
+      chip8_timer_60HZ();
+
+    SystemTable->BootServices->Stall(1000000 / 600);
+  }
 
   return 0;
 }

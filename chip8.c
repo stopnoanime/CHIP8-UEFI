@@ -215,3 +215,8 @@ void chip8_loop() {
     break;
   }
 }
+
+void chip8_timer_60HZ() {
+  if(DELAY_TIMER > 0) DELAY_TIMER--;
+  if(SOUND_TIMER > 0) SOUND_TIMER--;
+}

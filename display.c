@@ -34,7 +34,7 @@ void init_display(EFI_SYSTEM_TABLE *SystemTable) {
 void clear_framebuffer() {
   for (int y = 0; y < CHIP8_DISPLAY_Y; y++)
     for (int x = 0; x < CHIP8_DISPLAY_X; x++)
-      CHIP8_FRAMEBUFFER[x / DISPLAY_SCALE][y / DISPLAY_SCALE] = false;
+      CHIP8_FRAMEBUFFER[x][y] = false;
 }
 
 void draw_framebuffer() {
