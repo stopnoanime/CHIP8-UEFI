@@ -159,7 +159,6 @@ void chip8_loop() {
 
   case 0xD:
     REGS[0xF] = display_sprite(REGS[X(ins)], REGS[Y(ins)], N(ins), &RAM[I]);
-    draw_framebuffer();
     break;
 
   case 0xE:
