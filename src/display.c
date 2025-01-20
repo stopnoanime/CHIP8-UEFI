@@ -10,13 +10,6 @@ static bool CHIP8_FRAMEBUFFER[CHIP8_DISPLAY_X][CHIP8_DISPLAY_Y];
 
 static EFI_GRAPHICS_OUTPUT_PROTOCOL *gop;
 
-static void display_pixel(int x, int y, bool pixel) {
-  uint64_t base = gop->Mode->FrameBufferBase;
-  uint32_t per_line = gop->Mode->Info->PixelsPerScanLine;
-
-  *((uint32_t *)(base + 4 * per_line * y + 4 * x)) = pixel ? 0x33FF00 : 0;
-}
-
 void init_display(EFI_SYSTEM_TABLE *SystemTable) {
   SystemTable->ConOut->ClearScreen(SystemTable->ConOut);
 
@@ -38,10 +31,12 @@ void clear_framebuffer() {
 }
 
 void draw_framebuffer() {
-  for (int y = 0; y < CHIP8_DISPLAY_Y * DISPLAY_SCALE; y++)
-    for (int x = 0; x < CHIP8_DISPLAY_X * DISPLAY_SCALE; x++)
-      display_pixel(x + DISPLAY_OFFSET_X, y + DISPLAY_OFFSET_Y,
-                    CHIP8_FRAMEBUFFER[x / DISPLAY_SCALE][y / DISPLAY_SCALE]);
+  for (int y = 0; y < CHIP8_DISPLAY_Y; y++) { 
+    for (int x = 0; x < CHIP8_DISPLAY_X; x++) {
+      int color = CHIP8_FRAMEBUFFER[x][y] ? 0x33FF00 : 0;
+      gop->Blt(gop, (void*)&color, EfiBltVideoFill, 0, 0, DISPLAY_SCALE*x +DISPLAY_OFFSET_X , DISPLAY_SCALE*y + DISPLAY_OFFSET_Y, DISPLAY_SCALE, DISPLAY_SCALE, 0);
+    }
+  }
 }
 
 bool display_sprite(int x_start, int y_start, int tall, uint8_t *sprite) {

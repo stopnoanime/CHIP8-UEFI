@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define KEY_TICKS 10
+#define KEY_TICKS 12
 
 void init_input(EFI_SYSTEM_TABLE *ST);
 bool key_pressed(uint8_t key);

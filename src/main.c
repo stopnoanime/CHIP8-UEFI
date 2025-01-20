@@ -8,7 +8,7 @@
 
 #define ROM_SIZE 0xE00
 #define INTERVAL_60HZ 16000
-#define CHIP8_TICK_RATE 13
+#define CHIP8_TICK_RATE 8
 
 typedef union EFI_FILE_INFO_CONST {
   EFI_FILE_INFO data;
