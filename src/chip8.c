@@ -55,7 +55,7 @@ void chip8_init(const uint8_t *rom, uint16_t rom_size) {
   for (int i = 0; i < rom_size; i++)
     RAM[i + 0x200] = rom[i];
 
-  clear_framebuffer();
+  display_clear();
 }
 
 void chip8_loop() {
@@ -67,7 +67,7 @@ void chip8_loop() {
   switch (ins >> 12) {
   case 0x0:
     if (ins == 0x00E0)
-      clear_framebuffer();
+      display_clear();
     else if (ins == 0x00EE)
       PC = pop(ins);
     break;

@@ -7,7 +7,7 @@
 #include <protocol/efi-sfsp.h>
 
 #define ROM_SIZE 0xE00
-#define INTERVAL_60HZ 16000
+#define INTERVAL_60HZ 16666
 #define CHIP8_TICK_RATE 8
 
 typedef union EFI_FILE_INFO_CONST {
@@ -120,7 +120,7 @@ void load_rom(EFI_FILE_PROTOCOL *Roms, int rom_number, uint8_t *buff) {
 
 void start_chip8(EFI_SYSTEM_TABLE *SystemTable, uint8_t *rom) {
   chip8_init(rom, ROM_SIZE);
-  init_display(SystemTable);
+  display_init(SystemTable);
   init_input(SystemTable);
 
   while (true) {
@@ -128,7 +128,6 @@ void start_chip8(EFI_SYSTEM_TABLE *SystemTable, uint8_t *rom) {
       chip8_loop();
 
     chip8_timer_60HZ();
-    draw_framebuffer();
 
     if (update_pressed())
       return;
