@@ -7,7 +7,8 @@
 #define CHIP8_DISPLAY_X 64
 #define CHIP8_DISPLAY_Y 32
 
-#define GOP_DRAW(x, y, color) (*((uint32_t*)(gop->Mode->FrameBufferBase + 4 * gop->Mode->Info->PixelsPerScanLine * (y) + 4 * (x))) = (color))
+#define GOP_DRAW(x, y, color)                                                                                          \
+    (*((uint32_t *)(gop->Mode->FrameBufferBase + 4 * gop->Mode->Info->PixelsPerScanLine * (y) + 4 * (x))) = (color))
 
 void display_init(EFI_SYSTEM_TABLE *SystemTable);
 

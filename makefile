@@ -15,7 +15,10 @@ all : $(OUT_DIR)/main.efi
 $(OUT_DIR)/main.efi: $(OBJ)
 	$(LD) $(LDFLAGS) -entry:efi_main $^ -out:$@
 
-$(OUT_DIR)/%.o: src/%.c | $(OUT_DIR)
+$(OUT_DIR)/%.o: src/%.c src/%.h src/common.h | $(OUT_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+$(OUT_DIR)/%.o: src/%.c src/common.h | $(OUT_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 $(OUT_DIR):

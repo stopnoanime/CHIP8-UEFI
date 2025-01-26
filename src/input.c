@@ -1,69 +1,71 @@
 #include "input.h"
 
 static EFI_SYSTEM_TABLE *SystemTable;
+
 /* Counts the number of ticks since last keypress for every key */
 static uint8_t KEY_STATE[16];
-static const CHAR16 KEY_MAP[16] = {L'x', L'1', L'2', L'3', L'q', L'w',
-                                   L'e', L'a', L's', L'd', L'z', L'c',
-                                   L'4', L'r', L'f', L'v'};
+static const CHAR16 KEY_MAP[16] = {
+    u'x', u'1', u'2', u'3', u'q', u'w', u'e', u'a', u's', u'd', u'z', u'c', u'4', u'r', u'f', u'v',
+};
 
 static CHAR16 keyToUnicode(uint8_t key) { return KEY_MAP[key]; }
 
 static uint8_t unicodeToKey(CHAR16 unicode) {
-  for (int i = 0; i < 16; i++)
-    if (KEY_MAP[i] == unicode)
-      return i;
+    for (int i = 0; i < 16; i++)
+        if (KEY_MAP[i] == unicode)
+            return i;
 
-  return -1;
+    return -1;
 }
 
-void init_input(EFI_SYSTEM_TABLE *ST) {
-  SystemTable = ST;
+void input_init(EFI_SYSTEM_TABLE *ST) {
+    SystemTable = ST;
 
-  for (int i = 0; i < 16; i++)
-    KEY_STATE[i] = KEY_TICKS; // Mark as released
+    for (int i = 0; i < 16; i++)
+        KEY_STATE[i] = KEY_TICKS; // Mark as released
 }
 
 bool key_pressed(uint8_t key) { return KEY_STATE[key] < KEY_TICKS; }
 
-void reset_released() {
-  for (int i = 0; i < 16; i++)
-    if (KEY_STATE[i] == KEY_TICKS)
-      KEY_STATE[i]++;
+void reset_key_released() {
+    for (int i = 0; i < 16; i++)
+        if (KEY_STATE[i] == KEY_TICKS)
+            KEY_STATE[i] = KEY_TICKS + 1;
 }
 
-bool any_released(uint8_t *key) {
-  for (int i = 0; i < 16; i++) {
-    if (KEY_STATE[i] == KEY_TICKS) {
-      *key = i;
-      return true;
+bool any_key_released(uint8_t *key) {
+    for (int i = 0; i < 16; i++) {
+        if (KEY_STATE[i] == KEY_TICKS) {
+            *key = i;
+            return true;
+        }
     }
-  }
 
-  return false;
+    return false;
 }
 
-bool update_pressed() {
-  EFI_STATUS status;
-  EFI_INPUT_KEY inputKey;
+bool update_key_states() {
+    EFI_STATUS status;
+    EFI_INPUT_KEY inputKey;
 
-  status = SystemTable->ConIn->ReadKeyStroke(SystemTable->ConIn, &inputKey);
+    for (;;) {
+        status = SystemTable->ConIn->ReadKeyStroke(SystemTable->ConIn, &inputKey);
 
-  if (status == EFI_SUCCESS) {
-    if (inputKey.ScanCode == 0x17) // Escape
-      return true;
+        if (status != EFI_SUCCESS)
+            break;
 
-    uint8_t key = unicodeToKey(inputKey.UnicodeChar);
+        if (inputKey.ScanCode == 0x17) // Escape
+            return true;
 
-    if (key < 16)
-      KEY_STATE[key] = 0;
+        uint8_t key = unicodeToKey(inputKey.UnicodeChar);
 
-    return update_pressed(); // Process all keys in input queue
-  }
+        if (key < 16)
+            KEY_STATE[key] = 0;
+    }
 
-  for (int i = 0; i < 16; i++)
-    if (KEY_STATE[i] < KEY_TICKS)
-      KEY_STATE[i]++;
+    for (int i = 0; i < 16; i++)
+        if (KEY_STATE[i] < KEY_TICKS)
+            KEY_STATE[i]++;
 
-  return false;
+    return false;
 }
