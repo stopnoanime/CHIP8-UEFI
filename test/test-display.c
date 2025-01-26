@@ -40,7 +40,7 @@ void draw_blt_each_block(uint32_t color) {
   }
 }
 
-void display_uint64_t(uint64_t num, EFI_SYSTEM_TABLE *SystemTable) {
+void print_uint64_t(uint64_t num, EFI_SYSTEM_TABLE *SystemTable) {
   CHAR16 buf[25];
   int i = 0;
 
@@ -48,11 +48,12 @@ void display_uint64_t(uint64_t num, EFI_SYSTEM_TABLE *SystemTable) {
     buf[i++] = (num % 10) + u'0';
     num /= 10;
   } while (num > 0);
-
-  buf[i] = 0;
-
   i--;
-  for (int j = 0; j < i; i++, j--) {
+
+  buf[i + 1] = u' ';
+  buf[i + 2] = 0;
+
+  for (int j = 0; j < i; j++, i--) {
     CHAR16 temp = buf[i];
     buf[i] = buf[j];
     buf[j] = temp;
@@ -68,7 +69,7 @@ void benchmark_function(void (*f)(uint32_t color), EFI_SYSTEM_TABLE *SystemTable
     f(i%2 ? 0xFF: 0xFF00);
 
   uint64_t stop = __builtin_ia32_rdtsc();
-  display_uint64_t(stop-start, SystemTable);
+  print_uint64_t(stop-start, SystemTable);
 }
 
 int efi_main(EFI_HANDLE imageHandle, EFI_SYSTEM_TABLE *SystemTable) {
