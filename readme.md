@@ -1,4 +1,6 @@
 # CHIP8-UEFI
+![preview](./preview.png)
+
 A [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator that works in the UEFI environment without any OS.
 Works both on real hardware and QEMU.
 
